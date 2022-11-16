@@ -86,14 +86,14 @@ app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
   const { user } = request;
   const { id } = request.params;
 
-  user.todos.map((element) => {
-    if (element.id === id) {
-      element.done = true;
-      // return response.status(200).json(element);
-    }
-  });
+  const checksExistsId = user.todos.findIndex((element) => element.id === id);
 
-  return response.status(404).json({ error: "Did not find the desired ID" });
+  if (checksExistsId != -1) {
+    user.todos[checksExistsId].done = true;
+    return response.status(200).json(user.todos[checksExistsId]);
+  } else {
+    return response.status(404).json({ error: "Did not find the desired ID" });
+  }
 });
 
 app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
