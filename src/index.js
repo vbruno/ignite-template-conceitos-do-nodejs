@@ -71,20 +71,29 @@ app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
   const { title, deadline } = request.body;
   const { id } = request.params;
 
-  user.todos.map((element) => {
-    if (element.id === id) {
-      element.title = title;
-      element.deadline = deadline;
+  const checksExistsId = user.todos.findIndex((element) => element.id === id);
 
-      return response.status(200).json(element);
-    }
-  });
-
-  return response.status(404).send();
+  if (checksExistsId != -1) {
+    user.todos[checksExistsId].title = title;
+    user.todos[checksExistsId].deadline = deadline;
+    return response.status(200).json(user.todos[checksExistsId]);
+  } else {
+    return response.status(404).json({ error: "Did not find the desired ID" });
+  }
 });
 
 app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { user } = request;
+  const { id } = request.params;
+
+  user.todos.map((element) => {
+    if (element.id === id) {
+      element.done = true;
+      // return response.status(200).json(element);
+    }
+  });
+
+  return response.status(404).json({ error: "Did not find the desired ID" });
 });
 
 app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
