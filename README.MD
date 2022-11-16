@@ -6,5 +6,5 @@
 - [x] GET /todos
 - [x] POST /todos
 - [x] PUT /todos/:id
-- [] PATCH /todos/:id/done
-- [] DELETE /todos/:id
+- [x] PATCH /todos/:id/done
+- [x] DELETE /todos/:id

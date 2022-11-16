@@ -97,7 +97,17 @@ app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
 });
 
 app.delete("/todos/:id", checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { user } = request;
+  const { id } = request.params;
+
+  const checksExistsId = user.todos.findIndex((element) => element.id === id);
+
+  if (checksExistsId != -1) {
+    user.todos.splice(checksExistsId, 1);
+    return response.status(200).json(user.todos);
+  } else {
+    return response.status(404).json({ error: "Did not find the desired ID" });
+  }
 });
 
 module.exports = app;
